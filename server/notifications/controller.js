@@ -43,12 +43,14 @@ controller.getByUser = function(req, res, next){
 				lender_id: user.id
 			}
 		}).then(function(items){
-			var itemsId = [];
+			var itemsList = [];
 			for(var i = 0; i < items.length; i++){
-				itemsId.push(items[i].id);
+				itemsList.push(items[i].id);
 			}
 			Notification.findAll({
-				itemreq_id: itemsId
+				where: {
+					itemreq_id: itemsList
+				}
 			}).then(function(notifications){
 				res.json(notifications);
 			})
