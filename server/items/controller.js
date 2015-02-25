@@ -25,7 +25,7 @@ controller.create = function(req, res, next){
     req.body.city = user.city;
     Item.create(req.body)
       .then(function(item){
-        res.end(); //edited to just end.
+        res.json(item); //edited to just end.
       })
       .catch(function(error){
         ('inside error of items create controller ', error);
