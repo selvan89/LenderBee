@@ -14,19 +14,18 @@ controller.create = function(req, res, next){
 	newUser.fbprofile = req.body.link;
 	//extract fb data to create users with
 	//fb name (first, last)
-	Users.find({
+	User.find({
 		where: {
-			fbid: newUser.id
+			fbid: newUser.fbid
 		}
 	}).then(function(user){
+		console.log(user);
 		if(!user){
 			User.create(newUser).then(function(user){
-				console.log(user);
 			})
 		}
 		else{
 			User.update(newUser).then(function(user){
-				console.log(user);
 			})
 		}
 	})
@@ -34,7 +33,6 @@ controller.create = function(req, res, next){
 
 controller.getOne = function(req, res, next){
 	var userId = req.params.user;
-	console.log('userId  ', userId);
 	User.find({
 		where: {
 			id: userId
@@ -42,7 +40,6 @@ controller.getOne = function(req, res, next){
 	}).then(function(user){
 		res.json(user);
 	}).catch(function(error){
-		console.log('error inside the user controller getOne function ', error);
 	})
 }
 
