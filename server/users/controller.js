@@ -6,32 +6,30 @@ var Message = global.db.Message;
 var controller = {};
 controller.create = function(req, res, next){
 	console.log(req.body);
-	var newUser = {}
+	var newUser = {};
+	newUser.fbid = req.body.id;
+	newUser.username = req.body.name;
+	newUser.firstname = req.body.first_name;
+	newUser.lastname = req.body.last_name;
+	newUser.fbprofile = req.body.link;
 	//extract fb data to create users with
-	//reputation = 0, bee bucks = 10, city, state, country,
 	//fb name (first, last)
-	Users.findOrCreate({
+	Users.find({
 		where: {
-			fbid: req.body.id
-		},
-		defaults: {
-    newUser.reputation = 0;
-    newUser.reviews = 0;
-    newUser.beebucks = 0;
-  }
+			fbid: newUser.id
+		}
 	}).then(function(user){
-		console.log("creating userAAAAAAA");
-		newUser.fbid = req.body.id;
-		newUser.username = req.body.name;
-		newUser.firstname = req.body.first_name;
-		newUser.lastname = req.body.last_name;
-		newUser.fbprofile = req.body.link;
-		res.send(user);
+		if(!user){
+			User.create(newUser).then(function(user){
+				console.log(user);
+			})
+		}
+		else{
+			User.update(newUser).then(function(user){
+				console.log(user);
+			})
+		}
 	})
-// 	User.create(req.body)
-// 		.then(function(user){
-// 		res.send(user);
-// 	})
 }
 
 controller.getOne = function(req, res, next){
