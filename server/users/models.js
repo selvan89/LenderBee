@@ -6,13 +6,13 @@ module.exports = function(sequelize, DataTypes) {
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     fbprofile: DataTypes.STRING,
-    reputation: {type: DataTypes.INTEGER, defaultValue: 0},
-    reviews: {type: DataTypes.INTEGER, defaultValue: 0},
+    rating: {type: DataTypes.INTEGER, defaultValue: 0},
     beebucks: {type: DataTypes.INTEGER, defaultValue: 20},
     city: DataTypes.STRING,
     state: DataTypes.STRING,
     street: DataTypes.STRING,
     country: DataTypes.STRING,
+    zipcode: DataTypes.INTEGER,
     fbpicture: DataTypes.STRING
   });
 }

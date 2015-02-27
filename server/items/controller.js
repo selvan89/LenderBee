@@ -18,15 +18,15 @@ controller.create = function(req, res, next){
       id: req.params.userId
     }
   }).then(function(user){
+    console.log('user.id', user);
     req.body.lender_id = user.id;
     req.body.country = user.country;
     req.body.state = user.state;
     req.body.street = user.street;
     req.body.city = user.city;
     Item.create(req.body)
-
       .then(function(item){
-        res.send(); //edited to just end.
+        res.send(item); //edited to just end.
       })
       .catch(function(error){
         ('inside error of items create controller ', error);

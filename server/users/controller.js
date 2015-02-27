@@ -40,10 +40,12 @@ controller.create = function(req, res, next){
 		console.log(user);
 		if(!user){
 			User.create(newUser).then(function(user){
+				res.send(user);
 			})
 		}
 		else{
 			User.update(newUser).then(function(user){
+				res.send(user);
 			})
 		}
 	})
@@ -56,7 +58,7 @@ controller.getOne = function(req, res, next){
 			id: userId
 		}
 	}).then(function(user){
-		res.json(user);
+			res.json(user);
 		}).catch(function(error){
 	})
 }

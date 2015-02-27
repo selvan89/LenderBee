@@ -13,8 +13,8 @@ controller.create = function(req, res, next){
 	var from = req.params.fromId;
 	var to = req.params.toId;
 
-	req.body.from = from;
-	req.body.to = to;
+	req.body.from_id = from;
+	req.body.to_id = to;
 	console.log(req.body.message);
 	Messages.create(req.body).then(function(message){
 		res.send(message);
@@ -103,8 +103,8 @@ controller.getMessages = function(req, res, next){
 	// 	//find all messages associated with a user
 		Messages.findAll({
 			where: Sequelize.or(
-				{to: req.params.userId},
-				{from: req.params.userId}
+				{to_id: req.params.userId},
+				{from_id: req.params.userId}
 			)
 		}).then(function(messages){
 			console.log(messages);
