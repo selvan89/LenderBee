@@ -12,6 +12,24 @@ controller.create = function(req, res, next){
 	newUser.firstname = req.body.first_name;
 	newUser.lastname = req.body.last_name;
 	newUser.fbprofile = req.body.link;
+	newUser.city = req.body.city;
+	newUser.state = req.body.state;
+	newUser.street = req.body.street;
+	newUser.country = req.body.country;
+	newUser.fbpicture = req.body.picinfo;
+	// fbid: DataTypes.STRING,
+	// username: DataTypes.STRING,
+	// firstname: DataTypes.STRING,
+	// lastname: DataTypes.STRING,
+	// fbprofile: DataTypes.STRING,
+	// reputation: {type: DataTypes.INTEGER, defaultValue: 0},
+	// reviews: {type: DataTypes.INTEGER, defaultValue: 0},
+	// beebucks: {type: DataTypes.INTEGER, defaultValue: 20},
+	// city: DataTypes.STRING,
+	// state: DataTypes.STRING,
+	// street: DataTypes.STRING,
+	// country: DataTypes.STRING,
+	// fbpicture: DataTypes.STRING
 	//extract fb data to create users with
 	//fb name (first, last)
 	User.find({
@@ -39,7 +57,7 @@ controller.getOne = function(req, res, next){
 		}
 	}).then(function(user){
 		res.json(user);
-	}).catch(function(error){
+		}).catch(function(error){
 	})
 }
 

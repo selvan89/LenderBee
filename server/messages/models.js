@@ -2,7 +2,7 @@ module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Message', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     message: DataTypes.TEXT,
-    from: DataTypes.TEXT,
-    to: DataTypes.TEXT
+    from: DataTypes.INTEGER,
+    to: DataTypes.INTEGER
   });
 }

@@ -12,6 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     city: DataTypes.STRING,
     state: DataTypes.STRING,
     street: DataTypes.STRING,
-    country: DataTypes.STRING
+    country: DataTypes.STRING,
+    fbpicture: DataTypes.STRING
   });
 }

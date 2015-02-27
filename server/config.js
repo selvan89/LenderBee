@@ -164,10 +164,10 @@ module.exports = function(app, express){
 	app.get('/api/items/city/:userId/:title', items.searchItemByCity); //WORKS
 	app.put('/api/items/return/:itemsId', items.returnItem); //WORKS --itemsId is the id of the item being returned
 	app.get('/api/items/user/:userId', items.getOneByUser); 
-
+		
 	//API routes for messages (can amend as we decide what we need)
-	app.post('/api/messages/:from/:to', messages.create); //WORKS
-	app.get('/api/messages/:user', messages.getMessages); //WORKS
+	app.post('/api/messages/:fromId/:toId', messages.create); //WORKS
+	app.get('/api/messages/:userId', messages.getMessages); //WORKS
 
 	//API routes for notifications (can amend as we decide what we need)
   //very serious mismatch between what i'm writing and what may be expected on front-end
