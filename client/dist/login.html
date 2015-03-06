@@ -3,25 +3,8 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LenderBee</title>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-  <!-- <link rel="stylesheet" href="/css/styles.css"> -->
-  <!-- <link rel="stylesheet" href="/dist/bower_components/font-awesome/css/font-awesome.css"> -->
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAna-lnoeF3HTZUEZJTzuccXqvXTZhOHO4"></script>
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <script>
@@ -36,39 +19,30 @@
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
         // Logged into your app and Facebook.
-        //get picinfo
-        $("#contents").show();
-        $("#loadingContents").hide();
-        var socket = io();
-        var picinfo = "";
-        FB.api(
-            "/me/picture?type=large",
-            function (response) {
-              if (response && !response.error) {
-                picinfo = response.data.url;
-              }
+        $.ajax({
+          type: "get",
+          url: "/api/users/test",
+          data: response,
+          dataType: 'json',
+          success: function(response){
+            console.log("response is: ", response);
+            if(response==="outside"){
+              console.log("LOLJK", response);
+              $(".loginButton").hide();
+              $(".signup").show();
+            }else{
+              document.location.href = "/";
             }
-        );
-        FB.api('/me', function(response) {
-          response.picinfo = picinfo;
-          socket.emit('userInfo', response);
-            $.ajax({
-              type: "POST",
-              url: "/api/users/signup",
-              data: response,
-              dataType: 'json'
-            });
+          }
         });
         testAPI();
       } else if (response.status === 'not_authorized') {
         // The person is logged into Facebook, but not your app.
-        document.location.href = "/login.html";
         document.getElementById('status').innerHTML = 'Please log ' +
           'into this app.';
       } else {
         // The person is not logged into Facebook, so we're not sure if
         // they are logged into this app or not.
-        document.location.href = "/login.html"; //change to reroute to login
         document.getElementById('status').innerHTML = 'Please log ' +
           'into Facebook.';
       }
@@ -87,11 +61,30 @@
     FB.init({
       appId      : 1568513570056402,
       cookie     : true,  // enable cookies to allow the server to access 
-                          // the session
+      session    :true,                // the session
       xfbml      : true,  // parse social plugins on this page
       version    : 'v2.1' // use version 2.1
     });
-
+    FB.Event.subscribe('auth.login', function(resp) {
+      //window.location = '/';
+      console.log("BLARG: ", resp);
+      $.ajax({
+        type: "get",
+        url: "/api/users/test",
+        data: resp,
+        dataType: 'json',
+        success: function(resp){
+          console.log("response is: ", resp);
+          if(resp==="outside"){
+            console.log("LOLJK", resp);
+            $(".loginButton").hide();
+            $(".signup").show();
+          }else{
+            document.location.href = "/";
+          }
+        }
+      });
+    });
 
     // Now that we've initialized the JavaScript SDK, we call 
     // FB.getLoginStatus().  This function gets the state of the
@@ -106,12 +99,6 @@
     // These three cases are handled in the callback function.
 
     FB.getLoginStatus(function(response) {
-      // $.ajax({
-      //   type: "POST",
-      //   url: "/auth/facebook",
-      //   data: response,
-      //   dataType: 'json'
-      // });
       statusChangeCallback(response);
     });
 
@@ -136,17 +123,42 @@
           'Thanks for logging in, ' + response.name + '!';
       });
     }
-    $("#contents").hide();
+
+    $("#submit").on("click", function(){
+      var locInfo = {};
+      locInfo.address = $("#address").val();
+      locInfo.city = $("#city").val();
+      locInfo.state = $("#state").val();
+      locInfo.country = $("#country").val();
+      locInfo.zip = $("#zip").val();
+      console.log("info: ",locInfo);
+      $.ajax({
+        type: "POST",
+        url: "/api/users/loc",
+        data: locInfo,
+        dataType: 'json',
+        success: function(){
+          window.location = '/';
+        }
+      });
+      //window.location = '/';
+    });
+
+    $(".signup").hide();
   });
   </script>
-  <div id="contents"><div id='main'></div></div>
-  <div id="loadingContents">loading...</div>
-
-  <script type="text/javascript" src="lenderbee.js"></script>
-<!--   // <script src="./bower_components/cloudinary/js/jquery.cloudinary.js"></script>
-  // <script src="./bower_components/cloudinary/js/jquery.ui.widget.js"></script>
-  // <script src="./bower_components/cloudinary/js/jquery.iframe-transport.js"></script>
-  // <script src="./bower_components/cloudinary/js/jquery.fileupload.js"></script> -->
->>>>>>> adfc8bbe7541c727523069a50edc2888ac9039d1
+  <div class="loginButton">
+    <p>at login area</p>
+    <div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div>
+  </div>
+  <div class="signup">
+    <h3>Sign up!</h3>
+    <p>Address: <input type="text" id="address"></p>
+    <p>City: <input type="text" id="city"></p>
+    <p>State: <input type="text" id="state"></p>
+    <p>Country: <input type="text" id="country"></p>
+    <p>Zip code: <input type="text" id="zip"></p>
+    <button id="submit" name="submit">Submit</button>
+  </div>
 </body>
 </html>
